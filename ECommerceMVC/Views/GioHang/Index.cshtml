@@ -1,0 +1,139 @@
+﻿@model IEnumerable<ECommerceMVC.Models.ViewModels.CartItemVM>
+@{
+    ViewData["Title"] = "Gio Hang";
+}
+
+<!-- Cart Page Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Products</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Handle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr id="row-@item.MaHH">
+                            <td><img src="~/Hinh/HangHoa/@item.Hinh" style="width:80px;height:80px;" class="rounded-circle" /></td>
+                            <td>@item.TenHH</td>
+                            <td>@item.DonGia $</td>
+                            <td>
+                                <div class="input-group" style="width:120px;">
+                                    <button class="btn btn-sm btn-minus" onclick="updateQuantity(@item.MaHH, -1)">-</button>
+                                    <input id="qty-@item.MaHH" class="form-control text-center" value="@item.SoLuong" />
+                                    <button class="btn btn-sm btn-plus" onclick="updateQuantity(@item.MaHH, +1)">+</button>
+                                </div>
+                                <div id="stock-msg-@item.MaHH" class="text-danger small" style="display:none;">Vượt quá số lượng tồn kho</div>
+                            </td>
+                            <td id="total-@item.MaHH">@item.ThanhTien $</td>
+                            <td><button onclick="removeFromCart(@item.MaHH)" class="btn btn-danger">x</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="row g-4 justify-content-end">
+            <div class="col-8"></div>
+            <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
+                <div class="bg-light rounded">
+                    <div class="p-4">
+                        <h1 class="display-6 mb-4">Cart <span class="fw-normal">Total</span></h1>
+                        <div class="d-flex justify-content-between">
+                            <h5 class="mb-0 me-4">Shipping</h5>
+                            <div class="">
+                                <p class="mb-0">$0.00</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
+                        <h5 class="mb-0 ps-4 me-4" >Total</h5>
+                        <p class="mb-0 pe-4" id="cart-total">$@Model.Sum(x => x.ThanhTien)</p>
+                    </div>
+                    <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">Proceed Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cart Page End -->
+
+<script>
+    function updateQuantity(id, change = 0) {
+        let qtyInput = document.getElementById("qty-" + id);
+        let oldQty = parseInt(qtyInput.value);
+        let newQty = oldQty + change;
+
+        // nếu là case người nhập vào input
+        if (change === 0) {
+            newQty = Math.max(1, parseInt(qtyInput.value) || 1);
+        }
+
+        fetch("/GioHang/UpdateQuantity", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({ id, quantity: newQty })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (!data.success) return;
+
+            // xử lý input: chỉ update khi server cho phép
+            qtyInput.value = data.finalQuantity;
+
+            // cập nhật thành tiền
+            document.getElementById("total-" + id).innerText = data.thanhTien + " $";
+            document.getElementById("cart-total").innerText = "$" + data.total;
+
+            // xử lý thông báo tồn kho
+            const msg = document.getElementById("stock-msg-" + id);
+            if (data.message) {
+                msg.innerText = data.message;
+                msg.style.display = "block";
+            } else {
+                msg.style.display = "none";
+            }
+
+            // xử lý disable nút tăng/giảm
+            const minusBtn = document.getElementById("btn-minus-" + id);
+            const plusBtn = document.getElementById("btn-plus-" + id);
+
+            minusBtn?.toggleAttribute("disabled", data.finalQuantity <= 1);
+            plusBtn?.toggleAttribute("disabled", data.finalQuantity >= data.stock);
+        });
+    }
+
+    // khi nhập thủ công trong input
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("input[id^='qty-']").forEach(inp => {
+            const id = inp.id.replace("qty-", "");
+            inp.addEventListener("change", () => updateQuantity(id, 0));
+        });
+    });
+
+    function removeFromCart(id){
+        fetch(`/GioHang/Remove?id=${id}`, { method:'POST' })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success){
+                document.getElementById("row-" + id).remove();
+                document.getElementById("cart-total").innerText = "$" + data.total;
+            }
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+        document.querySelectorAll("input[id^='qty-']").forEach(inp=>{
+            const id = inp.id.replace("qty-", "");
+            const minusBtn = document.getElementById("btn-minus-" + id);
+            minusBtn?.toggleAttribute("disabled", parseInt(inp.value) <= 1);
+        });
+    });
+</script>

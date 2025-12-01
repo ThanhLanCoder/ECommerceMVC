@@ -1,0 +1,214 @@
+﻿@model ECommerceMVC.Models.ViewModels.ProfileVM
+@{
+    ViewData["Title"] = "Thông Tin Cá Nhân";
+}
+
+<div class="profile-container">
+    <div class="card profile-card">
+        <!-- Header -->
+        <div class="profile-header">
+            <div class="text-center">
+                <h1 class="mb-2">Thông Tin Cá Nhân</h1>
+                <p class="mb-0 opacity-75">Quản lý thông tin của bạn</p>
+            </div>
+        </div>
+
+        <!-- Avatar Section -->
+        <div class="avatar-section">
+            <div class="avatar-wrapper">
+                <img src="@(string.IsNullOrEmpty(Model.Hinh) ? "https://ui-avatars.com/api/?name=" + Model.HoTen + "&background=667eea&color=fff&size=150" : "/images/avatars/" + Model.Hinh)"
+                     alt="Avatar" class="avatar-img" id="avatarPreview">
+                <label class="avatar-upload">
+                    <i class="bi bi-camera-fill"></i>
+                    <input type="file" id="avatarInput" name="HinhFile" accept="image/*">
+                </label>
+            </div>
+        </div>
+
+        <!-- User Info -->
+        <div class="user-info">
+            <h2 class="user-name" id="displayName">@Model.HoTen</h2>
+            <p class="user-email" id="displayEmail">@Model.Email</p>
+            <span class="user-badge"><i class="bi bi-star-fill me-1"></i>Thành viên Vàng</span>
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-body p-4">
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-primary">
+                        <i class="bi bi-cart-fill"></i>
+                    </div>
+                    <div class="stat-value">@Model.TongDonHang</div>
+                    <div class="stat-label">Đơn hàng</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-success">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </div>
+                    <div class="stat-value">@Model.DonHangHoanThanh</div>
+                    <div class="stat-label">Hoàn thành</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-warning">
+                        <i class="bi bi-clock-fill"></i>
+                    </div>
+                    <div class="stat-value">@Model.DonHangDangXuLy</div>
+                    <div class="stat-label">Đang xử lý</div>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <ul class="nav nav-tabs profile-tabs" id="profileTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button">
+                        <i class="bi bi-person-fill me-2"></i>Thông tin
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="security-tab" data-bs-toggle="tab" data-bs-target="#security" type="button">
+                        <i class="bi bi-shield-lock-fill me-2"></i>Bảo mật
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="profileTabContent">
+                <!-- Thông tin Tab -->
+                <div class="tab-pane fade show active" id="info" role="tabpanel">
+                    <form asp-action="UpdateProfile" method="post" enctype="multipart/form-data" id="profileForm">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger alert-custom"></div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Email" class="form-label">
+                                    <i class="bi bi-envelope-fill"></i>Email
+                                </label>
+                                <input asp-for="Email" class="form-control" disabled>
+                                <small class="text-muted">Email không thể thay đổi</small>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="HoTen" class="form-label">
+                                    <i class="bi bi-person-fill"></i>Họ và tên <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="HoTen" class="form-control" disabled>
+                                <span asp-validation-for="HoTen" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="DienThoai" class="form-label">
+                                    <i class="bi bi-phone-fill"></i>Số điện thoại <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="DienThoai" class="form-control" disabled>
+                                <span asp-validation-for="DienThoai" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="NgaySinh" class="form-label">
+                                    <i class="bi bi-calendar-fill"></i>Ngày sinh
+                                </label>
+                                <input asp-for="NgaySinh" class="form-control" type="date" disabled>
+                                <span asp-validation-for="NgaySinh" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="GioiTinh" class="form-label">
+                                    <i class="bi bi-gender-ambiguous"></i>Giới tính
+                                </label>
+                                <select asp-for="GioiTinh" class="form-select" disabled>
+                                    <option value="true">Nam</option>
+                                    <option value="false">Nữ</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    <i class="bi bi-calendar-check"></i>Ngày đăng ký
+                                </label>
+                                <input type="text" class="form-control" value="@Model.NgayDangKy.ToString("dd/MM/yyyy")" disabled>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="DiaChi" class="form-label">
+                                <i class="bi bi-house-fill"></i>Địa chỉ
+                            </label>
+                            <input asp-for="DiaChi" class="form-control" disabled>
+                            <span asp-validation-for="DiaChi" class="text-danger small"></span>
+                        </div>
+
+                        <div class="text-end mt-4">
+                            <button type="button" class="btn btn-edit" id="editBtn">
+                                <i class="bi bi-pencil-fill me-2"></i>Chỉnh sửa
+                            </button>
+                            <button type="submit" class="btn btn-save d-none" id="saveBtn">
+                                <i class="bi bi-check-circle-fill me-2"></i>Lưu thay đổi
+                            </button>
+                            <button type="button" class="btn btn-cancel d-none" id="cancelBtn">
+                                <i class="bi bi-x-circle-fill me-2"></i>Hủy
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Bảo mật Tab -->
+                <div class="tab-pane fade" id="security" role="tabpanel">
+                    <div class="password-section">
+                        <h5><i class="bi bi-info-circle-fill me-2"></i>Đổi mật khẩu</h5>
+                        <p class="mb-0 text-muted">Để bảo mật tài khoản, vui lòng không chia sẻ mật khẩu của bạn với người khác</p>
+                    </div>
+
+                    <form asp-action="ChangePassword" method="post" id="passwordForm">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger alert-custom"></div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="bi bi-lock-fill"></i>Mật khẩu hiện tại <span class="text-danger">*</span>
+                            </label>
+                            <input type="password" class="form-control" name="MatKhauCu" placeholder="Nhập mật khẩu hiện tại">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="bi bi-key-fill"></i>Mật khẩu mới <span class="text-danger">*</span>
+                            </label>
+                            <input type="password" class="form-control" name="MatKhauMoi" placeholder="Nhập mật khẩu mới (6-50 ký tự)">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="bi bi-check2-square"></i>Xác nhận mật khẩu mới <span class="text-danger">*</span>
+                            </label>
+                            <input type="password" class="form-control" name="XacNhanMatKhau" placeholder="Nhập lại mật khẩu mới">
+                        </div>
+
+                        <div class="alert alert-info alert-custom">
+                            <i class="bi bi-lightbulb-fill me-2"></i>
+                            <strong>Lưu ý:</strong> Mật khẩu phải có ít nhất 6 ký tự
+                        </div>
+
+                        <div class="text-end mt-4">
+                            <button type="submit" class="btn btn-save">
+                                <i class="bi bi-shield-check me-2"></i>Đổi mật khẩu
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/profile.css" asp-append-version="true">
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/profile.js" asp-append-version="true"></script>
+}

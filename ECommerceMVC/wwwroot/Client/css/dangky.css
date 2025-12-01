@@ -1,0 +1,274 @@
+﻿
+
+.register-wrapper {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 40px 0;
+}
+
+.register-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+    .register-container .card {
+        border-radius: 20px;
+        animation: fadeInUp 0.6s ease-out;
+        overflow: hidden;
+    }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.register-container .card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2rem;
+    text-align: center;
+    border: none;
+}
+
+    .register-container .card-header h2 {
+        margin: 0;
+        font-weight: 700;
+        font-size: 2rem;
+    }
+
+    .register-container .card-header p {
+        margin: 0.5rem 0 0 0;
+        opacity: 0.9;
+        font-size: 1.1rem;
+    }
+
+.register-container .card-body {
+    padding: 2.5rem;
+}
+
+.register-container .form-control,
+.register-container .form-select {
+    padding: 0.65rem 1rem;
+    border-radius: 10px;
+    border: 2px solid #e0e0e0;
+    transition: all 0.3s;
+}
+
+    .register-container .form-control:focus,
+    .register-container .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        transform: translateY(-2px);
+    }
+
+.register-container .form-control-lg {
+    padding: 0.75rem 1rem;
+}
+
+.register-container .form-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.5rem;
+}
+
+    .register-container .form-label i {
+        color: #667eea;
+        margin-right: 0.5rem;
+    }
+
+.register-container .text-danger {
+    color: #dc3545 !important;
+}
+
+/* Radio buttons styling */
+.register-container .form-check-input {
+    cursor: pointer;
+}
+
+    .register-container .form-check-input:checked {
+        background-color: #667eea;
+        border-color: #667eea;
+    }
+
+.register-container .form-check-label {
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Password toggle */
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #6c757d;
+    z-index: 10;
+    transition: color 0.3s;
+}
+
+    .password-toggle:hover {
+        color: #667eea;
+    }
+
+.position-relative-custom {
+    position: relative;
+}
+
+/* File input styling */
+.register-container input[type="file"] {
+    cursor: pointer;
+}
+
+    .register-container input[type="file"]::-webkit-file-upload-button {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-right: 1rem;
+    }
+
+        .register-container input[type="file"]::-webkit-file-upload-button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+/* Image preview */
+.image-preview {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+    .image-preview img {
+        max-width: 150px;
+        max-height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #667eea;
+        padding: 3px;
+        animation: zoomIn 0.3s ease-out;
+    }
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Submit button */
+.btn-register {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    padding: 0.75rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s;
+    color: white;
+}
+
+    .btn-register:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        color: white;
+    }
+
+    .btn-register:active {
+        transform: translateY(-1px);
+    }
+
+    .btn-register:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+/* Link styling */
+.link-custom {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+    .link-custom:hover {
+        color: #764ba2;
+        text-decoration: underline;
+    }
+
+/* Alert styling */
+.register-container .alert {
+    border-radius: 10px;
+    border: none;
+}
+
+/* Text primary custom */
+.text-primary-custom {
+    color: #667eea !important;
+}
+
+/* Required field indicator */
+.register-container .text-danger {
+    font-weight: bold;
+}
+
+/* Divider */
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+    .divider::before,
+    .divider::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .divider span {
+        padding: 0 1rem;
+        color: #6c757d;
+        font-size: 0.9rem;
+    }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .register-container .card-body {
+        padding: 1.5rem;
+    }
+
+    .register-container .card-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .register-container .card-header p {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .register-wrapper {
+        padding: 20px 0;
+    }
+
+    .register-container .card-body {
+        padding: 1.25rem;
+    }
+}

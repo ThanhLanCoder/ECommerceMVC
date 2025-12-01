@@ -1,5 +1,8 @@
-using ECommerceMVC.Data;
+using ECommerceMVC.Mappings;
+using ECommerceMVC.Models.Entities;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ECommerceMVC
 {
@@ -16,6 +19,29 @@ namespace ECommerceMVC
                 option.UseSqlServer(builder.Configuration.GetConnectionString("Ecomerce"));
             });
 
+            // Enable session
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+            //regiter mapper 
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+            //authentication and authorization
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/KhachHang/DangNhap";
+                    options.AccessDeniedPath = "/KhachHang/AccessDenied";
+                });
+
+
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -28,10 +54,10 @@ namespace ECommerceMVC
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
-            app.UseRouting();
-
+            app.UseSession();
+            app.UseAuthentication();
             app.UseAuthorization();
+            app.UseRouting();
 
             app.MapControllerRoute(
                 name: "default",

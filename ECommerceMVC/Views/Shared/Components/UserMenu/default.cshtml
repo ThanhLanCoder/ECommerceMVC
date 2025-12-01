@@ -1,0 +1,21 @@
+﻿@model ECommerceMVC.Models.ViewModels.UserMenuVM
+
+<div class="dropdown">
+    <a class="my-auto dropdown-toggle" data-bs-toggle="dropdown" style="cursor:pointer;">
+        <i class="fas fa-user fa-2x"></i>
+    </a>
+
+    <ul class="dropdown-menu dropdown-menu-end mt-3">
+        @if (Model.IsAuthenticated)
+        {
+            <li><h6 class="dropdown-header">Xin chào, @Model.Username!</h6></li>
+            <li><a class="dropdown-item" asp-controller="KhachHang" asp-action="Profile">Thông tin tài khoản</a></li>
+            <li><a class="dropdown-item" asp-controller="KhachHang" asp-action="DangXuat">Đăng xuất</a></li>
+        }
+        else
+        {
+            <li><a class="dropdown-item" asp-controller="KhachHang" asp-action="DangNhap">Đăng nhập</a></li>
+            <li><a class="dropdown-item" asp-controller="KhachHang" asp-action="DangKy">Đăng ký</a></li>
+        }
+    </ul>
+</div>

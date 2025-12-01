@@ -1,21 +1,23 @@
-using System.Diagnostics;
 using ECommerceMVC.Models;
+using ECommerceMVC.Models.Entities;
+using ECommerceMVC.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace ECommerceMVC.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly EcomerceContext db;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(EcomerceContext context)
         {
-            _logger = logger;
+            db = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "HangHoa");
         }
 
         public IActionResult Privacy()

@@ -22,14 +22,11 @@ D:\ECommerceMVC\ECommerceMVC\obj\Debug\net8.0\ECommerceMVC.RazorAssemblyInfo.cs
 D:\ECommerceMVC\ECommerceMVC\obj\Debug\net8.0\rjimswa.dswa.cache.json
 D:\ECommerceMVC\ECommerceMVC\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
 D:\ECommerceMVC\ECommerceMVC\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
-D:\ECommerceMVC\ECommerceMVC\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 D:\ECommerceMVC\ECommerceMVC\obj\Debug\net8.0\scopedcss\bundle\ECommerceMVC.styles.css
-D:\ECommerceMVC\ECommerceMVC\obj\Debug\net8.0\scopedcss\projectbundle\ECommerceMVC.bundle.scp.css
 D:\ECommerceMVC\ECommerceMVC\obj\Debug\net8.0\staticwebassets.build.json
 D:\ECommerceMVC\ECommerceMVC\obj\Debug\net8.0\staticwebassets.build.json.cache
 D:\ECommerceMVC\ECommerceMVC\obj\Debug\net8.0\staticwebassets.development.json
 D:\ECommerceMVC\ECommerceMVC\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-D:\ECommerceMVC\ECommerceMVC\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\ECommerceMVC\ECommerceMVC\obj\Debug\net8.0\ECommerc.3DA5BB63.Up2Date
 D:\ECommerceMVC\ECommerceMVC\obj\Debug\net8.0\ECommerceMVC.dll
 D:\ECommerceMVC\ECommerceMVC\obj\Debug\net8.0\refint\ECommerceMVC.dll
@@ -255,3 +252,6 @@ D:\ECommerceMVC\ECommerceMVC\bin\Debug\net8.0\runtimes\win\lib\net7.0\Microsoft.
 D:\ECommerceMVC\ECommerceMVC\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Drawing.Common.dll
 D:\ECommerceMVC\ECommerceMVC\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
 D:\ECommerceMVC\ECommerceMVC\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
+D:\ECommerceMVC\ECommerceMVC\obj\Debug\net8.0\ECommerceMVC.sourcelink.json
+D:\ECommerceMVC\ECommerceMVC\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+D:\ECommerceMVC\ECommerceMVC\bin\Debug\net8.0\AutoMapper.dll

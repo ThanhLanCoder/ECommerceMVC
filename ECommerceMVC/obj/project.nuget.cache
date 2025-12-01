@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "AZM2yke6BpU=",
+  "dgSpecHash": "ETamdFoawn8=",
   "success": true,
   "projectFilePath": "D:\\ECommerceMVC\\ECommerceMVC\\ECommerceMVC.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\TLT\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\TLT\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\TLT\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
     "C:\\Users\\TLT\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",

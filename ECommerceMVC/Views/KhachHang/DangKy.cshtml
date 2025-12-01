@@ -1,0 +1,125 @@
+﻿@model ECommerceMVC.Models.ViewModels.DangKyVM
+@{
+    ViewData["Title"] = "Đăng Ký";
+}
+
+<div class="container-fluid py-5 bg-light">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-body p-4 p-md-5">
+                        <h2 class="text-center mb-4 fw-bold text-primary">Đăng Ký Tài Khoản</h2>
+
+                        <form asp-action="DangKy" method="post" enctype="multipart/form-data">
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                            <!-- Email (Tên đăng nhập) -->
+                            <div class="mb-3">
+                                <label asp-for="Email" class="form-label fw-semibold">
+                                    <i class="bi bi-envelope-fill me-2"></i>Email (Tên đăng nhập) <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="Email" class="form-control form-control-lg" placeholder="example@email.com" />
+                                <span asp-validation-for="Email" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Mật khẩu -->
+                            <div class="mb-3">
+                                <label asp-for="MatKhau" class="form-label fw-semibold">
+                                    <i class="bi bi-lock-fill me-2"></i>Mật khẩu <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="MatKhau" class="form-control form-control-lg" placeholder="Nhập mật khẩu (6-50 ký tự)" />
+                                <span asp-validation-for="MatKhau" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Họ tên -->
+                            <div class="mb-3">
+                                <label asp-for="HoTen" class="form-label fw-semibold">
+                                    <i class="bi bi-person-fill me-2"></i>Họ và tên <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="HoTen" class="form-control form-control-lg" placeholder="Nguyễn Văn A" />
+                                <span asp-validation-for="HoTen" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Điện thoại -->
+                            <div class="mb-3">
+                                <label asp-for="DienThoai" class="form-label fw-semibold">
+                                    <i class="bi bi-phone-fill me-2"></i>Số điện thoại <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="DienThoai" class="form-control form-control-lg" placeholder="0123456789" />
+                                <span asp-validation-for="DienThoai" class="text-danger small"></span>
+                            </div>
+
+                            <div class="row">
+                                <!-- Giới tính -->
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">
+                                        <i class="bi bi-gender-ambiguous me-2"></i>Giới tính
+                                    </label>
+                                    <div class="d-flex gap-4">
+                                        <div class="form-check">
+                                            <input asp-for="GioiTinh" type="radio" value="true" class="form-check-input" id="gioiTinhNam" checked />
+                                            <label class="form-check-label" for="gioiTinhNam">Nam</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input asp-for="GioiTinh" type="radio" value="false" class="form-check-input" id="gioiTinhNu" />
+                                            <label class="form-check-label" for="gioiTinhNu">Nữ</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Ngày sinh -->
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="NgaySinh" class="form-label fw-semibold">
+                                        <i class="bi bi-calendar-event me-2"></i>Ngày sinh
+                                    </label>
+                                    <input asp-for="NgaySinh" class="form-control" type="date" />
+                                    <span asp-validation-for="NgaySinh" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <!-- Địa chỉ -->
+                            <div class="mb-3">
+                                <label asp-for="DiaChi" class="form-label fw-semibold">
+                                    <i class="bi bi-house-fill me-2"></i>Địa chỉ
+                                </label>
+                                <input asp-for="DiaChi" class="form-control" placeholder="Số nhà, tên đường, quận/huyện, tỉnh/thành phố" />
+                                <span asp-validation-for="DiaChi" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Ảnh đại diện -->
+                            <div class="mb-4">
+                                <label asp-for="Hinh" class="form-label fw-semibold">
+                                    <i class="bi bi-image-fill me-2"></i>Ảnh đại diện
+                                </label>
+                                <input type="file" name="Hinh" class="form-control" accept="image/*" />
+                                <div class="form-text">Chọn ảnh đại diện của bạn (tùy chọn)</div>
+                            </div>
+
+                            <!-- Nút submit -->
+                            <div class="d-grid gap-2 mb-3">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="bi bi-person-plus-fill me-2"></i>Đăng Ký
+                                </button>
+                            </div>
+
+                            <!-- Link đăng nhập -->
+                            <div class="text-center">
+                                <p class="text-muted mb-0">
+                                    Đã có tài khoản?
+                                    <a asp-action="DangNhap" class="text-primary fw-semibold text-decoration-none">Đăng nhập ngay</a>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
