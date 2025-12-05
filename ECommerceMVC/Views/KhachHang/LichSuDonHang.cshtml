@@ -1,0 +1,54 @@
+﻿@model IEnumerable<ECommerceMVC.Models.ViewModels.DonHangVM>
+
+@{
+    ViewData["Title"] = "Lịch sử đơn hàng";
+}
+
+<div class="container py-5">
+    <h2 class="mb-4">Lịch sử đơn hàng</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Mã đơn</th>
+                <th>Ngày đặt</th>
+                <th>Tổng tiền</th>
+                <th>Trạng thái</th>
+                <th>Tác vụ</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.MaHd</td>
+                    <td>@item.NgayDat.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>@item.TongTien.ToString("#,##0") đ</td>
+                    <td>@item.TrangThai</td>
+                    <td>
+                        @if (item.TrangThai == "Chờ xác nhận")
+                        {
+                            <a asp-action="HuyDon" asp-route-id="@item.MaHd" class="btn btn-danger btn-sm"
+                               onclick="return confirm('Bạn chắc chắn muốn hủy đơn hàng này?');">
+                                Hủy đơn
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="text-muted">Không thể hủy</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

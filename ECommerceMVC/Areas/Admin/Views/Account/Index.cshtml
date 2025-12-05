@@ -1,0 +1,160 @@
+﻿@model List<ECommerceMVC.Areas.Admin.Models.ViewModels.AccountVM>
+
+@{
+    ViewData["Title"] = "Quản lý Khách hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid p-0">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">Quản lý Khách hàng</h1>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCustomerModal">
+            <i class="bi bi-plus-circle me-2"></i>Thêm khách hàng
+        </button>
+    </div>
+
+    <!-- Filter & Search -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-5">
+                    <input type="text" name="search" class="form-control" placeholder="Tìm theo tên, email, số điện thoại...">
+                </div>
+                <div class="col-md-3">
+                    <select name="status" class="form-select">
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="1">Đang hoạt động</option>
+                        <option value="0">Bị khóa</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="level" class="form-select">
+                        <option value="">Tất cả cấp độ</option>
+                        <option value="vip">VIP</option>
+                        <option value="gold">Vàng</option>
+                        <option value="silver">Bạc</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-search me-2"></i>Tìm
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Customers Table với scroll -->
+    <div class="card">
+        <div class="card-body p-0">
+            <div style="max-height: 400px; overflow-y: auto;">
+                <!-- Scrollable container -->
+                <table class="table table-hover mb-0">
+                    <thead class="table-light position-sticky top-0">
+                        <tr>
+                            <th style="width: 60px;">ID</th>
+                            <th style="width: 70px;">Avatar</th>
+                            <th>Họ tên</th>
+                            <th>Email</th>
+                            <th>Số điện thoại</th>
+                            <th>Địa chỉ</th>
+                            <th>Cấp độ</th>
+                            <th>Trạng thái</th>
+                            <th style="width: 120px;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td><strong>@item.MaKh</strong></td>
+                                <td>
+                                    <img src="~/Client/Hinh/KhachHang/@item.Hinh"
+                                         class="rounded-circle" width="40" height="40" alt="Avatar">
+                                </td>
+                                <td><strong>@item.HoTen</strong></td>
+                                <td>@item.Email</td>
+                                <td>@item.SoDienThoai</td>
+                                <td>@item.DiaChi</td>
+                                <td>
+                                    <span class="badge bg-warning text-dark">@item.CapDo</span>
+                                </td>
+                                <td id="status_@item.MaKh">
+                                    @if (item.HieuLuc)
+                                    {
+                                        <span class="badge bg-success">Hoạt động</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Bị khóa</span>
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.MaKh" class="btn btn-sm btn-outline-info">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <button id="btnLock_@item.MaKh"
+                                            class="btn btn-sm btn-outline-danger"
+                                            onclick="lockCustomer('@item.MaKh')">
+
+                                        @if (item.HieuLuc)
+                                        {
+                                            <i class="bi bi-lock"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-unlock"></i>
+                                        }
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function lockCustomer(id) {
+
+        $.ajax({
+            url: '/Admin/Account/ToggleLock',
+            method: 'POST',
+            data: { id: id },
+            success: function (res) {
+                console.log(res); // giúp debug
+
+                if (res.success) {
+
+                    // HIỂN THỊ THÔNG BÁO
+                    alert(res.message);
+
+                    // Cập nhật badge trạng thái
+                    const status = document.getElementById("status_" + id);
+                    if (status) {
+                        status.innerHTML = res.hieuLuc
+                            ? '<span class="badge bg-success">Hoạt động</span>'
+                            : '<span class="badge bg-danger">Bị khóa</span>';
+                    }
+
+                    // Cập nhật icon nút
+                    const btn = document.getElementById("btnLock_" + id);
+                    if (btn) {
+                        btn.innerHTML = res.hieuLuc
+                            ? '<i class="bi bi-lock"></i>'
+                            : '<i class="bi bi-unlock"></i>';
+                    }
+
+                } else {
+                    alert(res.message);
+                }
+            },
+            error: function (xhr) {
+                console.log(xhr.responseText);
+                alert("Có lỗi xảy ra!");
+            }
+        });
+    }
+</script>

@@ -1,0 +1,27 @@
+﻿<tr>
+    <td>
+        <strong>@Model.MaHH</strong>
+    </td>
+    <td>
+        <img src="~/Client/Hinh/HangHoa/@Model.Hinh" alt="Product" class="img-thumbnail" style="width:80px; height:80px; object-fit:cover;">
+    </td>
+    <td>
+        <strong>@Model.TenHH</strong><br>
+    </td>
+    <td>@Model.TenLoai</td>
+    <td><strong>@Model.DonGia.ToString("N0")$</strong></td>
+    <td>
+        <span class="badge bg-success">@Model.SoLuongTon</span>
+    </td>
+    <td>
+        <a asp-action="Edit" asp-route-id="@Model.MaHH" class="btn btn-sm btn-outline-primary" title="Sửa">
+            <i class="bi bi-pencil"></i>
+        </a>
+        <a asp-action="Details" asp-route-id="@Model.MaHH" class="btn btn-sm btn-outline-info" title="Chi tiết">
+            <i class="bi bi-eye"></i>
+        </a>
+        <button class="btn btn-sm btn-outline-danger" onclick="deleteProduct(@Model.MaHH)" title="Xóa">
+            <i class="bi bi-trash"></i>
+        </button>
+    </td>
+</tr>

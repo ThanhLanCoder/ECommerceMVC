@@ -1,3 +1,4 @@
+using ECommerceMVC.Helper;
 using ECommerceMVC.Mappings;
 using ECommerceMVC.Models.Entities;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -39,6 +40,8 @@ namespace ECommerceMVC
                     options.AccessDeniedPath = "/KhachHang/AccessDenied";
                 });
 
+            //config VnPay
+            builder.Services.Configure<VnPayConfig>(builder.Configuration.GetSection("VnPay"));
 
 
 
@@ -51,13 +54,18 @@ namespace ECommerceMVC
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            app.UseRouting();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseRouting();
+
+            
+
+            app.MapControllerRoute(
+                name: "areas",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
             app.MapControllerRoute(
                 name: "default",

@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
-using ECommerceMVC.Models.Entities;
-using Microsoft.AspNetCore.Mvc;
-using ECommerceMVC.Models.ViewModels;
 using ECommerceMVC.Helper;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Threading.Tasks;
+using ECommerceMVC.Models.Entities;
+using ECommerceMVC.Models.ViewModels;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace ECommerceMVC.Controllers
 {
@@ -82,7 +83,7 @@ namespace ECommerceMVC.Controllers
             {
                 new Claim(ClaimTypes.Name, khachHang.HoTen),
                 new Claim(ClaimTypes.Email, khachHang.Email),
-                new Claim("UsedId", khachHang.MaKh),
+                new Claim("UserId", khachHang.MaKh),
                 new Claim(ClaimTypes.Role, khachHang.VaiTro == 1 ? "Admin" : "User")
             };
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -99,7 +100,7 @@ namespace ECommerceMVC.Controllers
 
 
             if (khachHang.VaiTro == 1) // Admin
-                return RedirectToAction("Index", "Admin");
+                return RedirectToAction("Index", "Home", new {area = "Admin"});
 
             return RedirectToAction("Index", "Home");
         }
@@ -108,7 +109,7 @@ namespace ECommerceMVC.Controllers
         public IActionResult Profile()
         {
             // Lấy MaKh từ claim
-            string? userId = User.FindFirst("UsedId")?.Value;
+            string? userId = User.FindFirst("UserId")?.Value;
             if (string.IsNullOrEmpty(userId))
                 return RedirectToAction("DangNhap");
 
@@ -122,8 +123,8 @@ namespace ECommerceMVC.Controllers
                              .ToList();
 
             var tongDonHang = donHangs.Count;
-            var hoanThanh = donHangs.Count(d => d.MaTrangThaiNavigation.TenTrangThai == "Hoàn thành");
-            var dangXuLy = donHangs.Count(d => d.MaTrangThaiNavigation.TenTrangThai != "Hoàn thành");
+            var hoanThanh = donHangs.Count(d => d.MaTrangThaiNavigation.TenTrangThai == "Đã Giao Hàng");
+            var dangXuLy = donHangs.Count(d => d.MaTrangThaiNavigation.TenTrangThai != "Đã Giao Hàng");
 
             var model = new ProfileVM
             {
@@ -143,12 +144,75 @@ namespace ECommerceMVC.Controllers
             return View(model);
         }
 
+        [Authorize]
+        public IActionResult LichSuDonHang()
+        {
+            var userId = User.FindFirst("UserId")?.Value;
+
+            // Lấy dữ liệu thô từ DB trước
+            var hoaDons = db.HoaDons
+                .Where(h => h.MaKh == userId)
+                .OrderByDescending(h => h.NgayDat)
+                .ToList();
+
+            var list = hoaDons.Select(h => new DonHangVM
+            {
+                MaHd = h.MaHd,
+                NgayDat = h.NgayDat,
+                TongTien = db.ChiTietHds
+                    .Where(ct => ct.MaHd == h.MaHd)
+                    .Sum(ct => (ct.DonGia * ct.SoLuong) - ct.GiamGia),
+
+                TrangThai = h.MaTrangThai switch
+                {
+                    0 => "Chờ xác nhận",
+                    1 => "Đã thanh toán",
+                    2 => "Chờ giao hàng",
+                    3 => "Hoàn thành",
+                    -1 => "Đã Hủy",
+                    _ => "Unknown"  
+                }
+
+            }).ToList();
+
+            return View(list);
+        }
+
+        [Authorize]
+        public IActionResult HuyDon(int id)
+        {
+            var userId = User.FindFirst("UserId")?.Value;
+
+            var hd = db.HoaDons.FirstOrDefault(h => h.MaHd == id && h.MaKh == userId);
+
+            if (hd == null)
+            {
+                TempData["Error"] = "Không tìm thấy đơn hàng!";
+                return RedirectToAction("LichSuDonHang");
+            }
+
+            if (hd.MaTrangThai != 0)
+            {
+                TempData["Error"] = "Chỉ có thể hủy đơn đang chờ xác nhận!";
+                return RedirectToAction("LichSuDonHang");
+            }
+
+            hd.MaTrangThai = -1; // Đơn bị hủy
+            db.SaveChanges();
+
+            TempData["Success"] = "Hủy đơn hàng thành công!";
+            return RedirectToAction("LichSuDonHang");
+        }
+
+
         [HttpGet]
         public async Task<IActionResult> DangXuat()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Index", "HangHoa");
+            return RedirectToAction("DangNhap", "KhachHang");
         }
+
+     
 
     }
 }

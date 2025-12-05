@@ -1,0 +1,81 @@
+﻿<nav class="sidebar">
+    <a class="sidebar-brand" asp-area="Admin" asp-controller="Home" asp-action="Index">
+        <i class="bi bi-shop me-2"></i>E-Commerce
+    </a>
+
+    <ul class="sidebar-nav">
+        <li class="sidebar-header">Quản lý</li>
+
+        <li class="sidebar-item">
+            <a class="sidebar-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active" : "")"
+               asp-area="Admin"
+               asp-controller="Home"
+               asp-action="Index">
+                <i class="bi bi-speedometer2"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+
+        <li class="sidebar-item">
+            <a class="sidebar-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Product" ? "active" : "")"
+               asp-area="Admin"
+               asp-controller="Product"
+               asp-action="Index">
+                <i class="bi bi-box-seam"></i>
+                <span>Sản phẩm</span>
+            </a>
+        </li>
+
+        <li class="sidebar-item">
+            <a class="sidebar-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Order" ? "active" : "")"
+               asp-area="Admin"
+               asp-controller="Order"
+               asp-action="Index">
+                <i class="bi bi-cart3"></i>
+                <span>Đơn hàng</span>
+            </a>
+        </li>
+
+        <li class="sidebar-item">
+            <a class="sidebar-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Account" ? "active" : "")"
+               asp-area="Admin"
+               asp-controller="Account"
+               asp-action="Index">
+                <i class="bi bi-people"></i>
+                <span>Khách hàng</span>
+            </a>
+        </li>
+
+        @* <li class="sidebar-item">
+            <a class="sidebar-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Category" ? "active" : "")"
+               asp-area="Admin"
+               asp-controller="Category"
+               asp-action="Index">
+                <i class="bi bi-tag"></i>
+                <span>Danh mục</span>
+            </a>
+        </li> *@
+
+        <li class="sidebar-header">Hệ thống</li>
+
+        @* <li class="sidebar-item">
+            <a class="sidebar-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Settings" ? "active" : "")"
+               asp-area="Admin"
+               asp-controller="Settings"
+               asp-action="Index">
+                <i class="bi bi-gear"></i>
+                <span>Cài đặt</span>
+            </a>
+        </li> *@
+
+        <li class="sidebar-item">
+            <a class="sidebar-link"
+               asp-area="Admin"
+               asp-controller="Account"
+               asp-action="Logout">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Đăng xuất</span>
+            </a>
+        </li>
+    </ul>
+</nav>

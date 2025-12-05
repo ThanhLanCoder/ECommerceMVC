@@ -1,0 +1,136 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid p-0">
+    <h1 class="h3 mb-4">Dashboard</h1>
+
+    <div class="row g-3 mb-4">
+
+        <!-- Doanh thu -->
+        <div class="col-sm-6 col-xl-3">
+            <div class="stats-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <div class="stats-label">Doanh thu</div>
+                        <div class="stats-value">@Model.DoanhThu.ToString("N0") đ</div>
+                    </div>
+                    <div class="stats-icon stats-icon-success">
+                        <i class="bi bi-currency-dollar"></i>
+                    </div>
+                </div>
+                <div class="stats-change text-success">
+                    <i class="bi bi-arrow-up"></i> so với tuần trước
+                </div>
+            </div>
+        </div>
+
+        <!-- Tổng đơn hàng -->
+        <div class="col-sm-6 col-xl-3">
+            <div class="stats-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <div class="stats-label">Đơn hàng</div>
+                        <div class="stats-value">@Model.TongDonHang</div>
+                    </div>
+                    <div class="stats-icon stats-icon-primary">
+                        <i class="bi bi-cart3"></i>
+                    </div>
+                </div>
+                <div class="stats-change text-danger">
+                    <i class="bi bi-arrow-down"></i> so với tuần trước
+                </div>
+            </div>
+        </div>
+
+        <!-- Khách truy cập -->
+        <div class="col-sm-6 col-xl-3">
+            <div class="stats-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <div class="stats-label">Khách truy cập</div>
+                        <div class="stats-value">@Model.KhachTruyCap</div>
+                    </div>
+                    <div class="stats-icon stats-icon-warning">
+                        <i class="bi bi-people"></i>
+                    </div>
+                </div>
+                <div class="stats-change text-success">
+                    <i class="bi bi-arrow-up"></i> so với tuần trước
+                </div>
+            </div>
+        </div>
+
+        <!-- Sản phẩm bán ra -->
+        <div class="col-sm-6 col-xl-3">
+            <div class="stats-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <div class="stats-label">Bán ra</div>
+                        <div class="stats-value">@Model.SanPhamBanRa</div>
+                    </div>
+                    <div class="stats-icon stats-icon-danger">
+                        <i class="bi bi-truck"></i>
+                    </div>
+                </div>
+                <div class="stats-change text-danger">
+                    <i class="bi bi-arrow-down"></i> so với tuần trước
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="orders-card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5>10 đơn hàng chờ xác nhận</h5>
+                        <a asp-controller="Order" asp-action="Index" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-eye me-1"></i> Xem tất cả
+                        </a>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-custom">
+                        <thead>
+                            <tr>
+                                <th>Mã đơn</th>
+                                <th>Khách hàng</th>
+                                <th>Ngày đặt</th>
+                                <th>Tổng tiền</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in Model.DonHangChoXN)
+                            {
+                                <tr>
+                                    <td><strong>#@item.MaHd</strong></td>
+                                    <td>@item.HoTen</td>
+                                    <td>@item.NgayDat.ToString("dd/MM/yyyy")</td>
+                                    <td><strong>@item.TongTien.ToString("N0") đ</strong></td>
+                                    <td>
+                                        <span class="badge bg-primary badge-custom">
+                                            @item.TrangThai
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Order" asp-action="Details" asp-route-id="@item.MaHd" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>

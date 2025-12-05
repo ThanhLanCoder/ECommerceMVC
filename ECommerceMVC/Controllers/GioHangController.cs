@@ -2,6 +2,7 @@
 using ECommerceMVC.Models.Entities;
 using ECommerceMVC.Models.ViewModels;
 using ECommerceMVC.Helpers;
+using Microsoft.AspNetCore.Authorization;
 namespace ECommerceMVC.Controllers
 {
     public class GioHangController : Controller
@@ -120,5 +121,6 @@ namespace ECommerceMVC.Controllers
             var cart = GetCart();
             return View(cart);
         }
+
     }
 }

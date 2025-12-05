@@ -1,8 +1,8 @@
-﻿using ECommerceMVC.Models;
+﻿using ECommerceMVC.Helper;
+using ECommerceMVC.Models;
 using ECommerceMVC.Models.Entities;
 using ECommerceMVC.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-
 
 namespace ECommerceMVC.Controllers
 {
@@ -13,17 +13,15 @@ namespace ECommerceMVC.Controllers
         public HangHoaController(EcomerceContext context) {
             db = context;
         }
-        public IActionResult Index(int? loai, int page = 1, string? search = null)
+        public async Task<IActionResult> IndexAsync(int? loai, int page = 1, string? search = null)
         {
-            int pageSize = 9; 
+            int pageSize = 9;
 
             var query = db.HangHoas.AsQueryable();
 
-            // lọc theo danh mục
             if (loai.HasValue)
                 query = query.Where(p => p.MaLoai == loai.Value);
 
-            // lọc theo từ khóa tìm kiếm
             if (!string.IsNullOrEmpty(search))
             {
                 query = query.Where(h =>
@@ -31,14 +29,8 @@ namespace ECommerceMVC.Controllers
                     h.MoTaDonVi.Contains(search));
             }
 
-            // tổng số sản phẩm sau khi lọc
-            int totalItems = query.Count();
-
-            // lấy sản phẩm phân trang
-            var hangHoas = query
+            var projectedQuery = query
                 .OrderBy(p => p.TenHh)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
                 .Select(p => new HangHoaVM
                 {
                     MaHH = p.MaHh,
@@ -47,21 +39,16 @@ namespace ECommerceMVC.Controllers
                     Hinh = p.Hinh ?? "",
                     MoTaNgan = p.MoTaDonVi ?? "",
                     TenLoai = p.MaLoaiNavigation.TenLoai
-                }).ToList();
+                });
 
-            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+            var pagedData = await projectedQuery.ToPagedListAsync(page, pageSize);
 
-            var model = new PhanTrangHangHoaVM
-            {
-                HangHoas = hangHoas,
-                CurrentPage = page,
-                TotalPages = totalPages,
-                MaLoai = loai,
-                Search = search
-            };
+            ViewBag.Loai = loai;
+            ViewBag.Search = search;
 
-            return View(model);
+            return View(pagedData);
         }
+
         public IActionResult Detail(int id)
         {
             var hangHoa = db.HangHoas

@@ -1,0 +1,203 @@
+﻿@model ECommerceMVC.Areas.Admin.Models.ViewModels.ProductItemVM
+
+@{
+    ViewData["Title"] = "Chỉnh sửa sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid px-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="mb-0">
+                    <i class="bi bi-pencil-square me-2"></i>Chỉnh sửa sản phẩm
+                </h2>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left me-1"></i>Quay lại
+                </a>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <input type="hidden" asp-for="MaHH" />
+
+                        <div class="row">
+                            <!-- Cột trái -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold text-muted">Mã sản phẩm</label>
+                                    <input type="text" class="form-control" value="@Model.MaHH" disabled />
+                                    <div class="form-text">
+                                        <i class="bi bi-lock me-1"></i>Không thể thay đổi mã sản phẩm
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="TenHH" class="form-label fw-semibold">
+                                        Tên sản phẩm <span class="text-danger">*</span>
+                                    </label>
+                                    <input asp-for="TenHH" class="form-control" placeholder="Nhập tên sản phẩm" />
+                                    <span asp-validation-for="TenHH" class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="DonGia" class="form-label fw-semibold">
+                                        Đơn giá <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <input asp-for="DonGia" class="form-control" type="number" step="0.01" placeholder="0.00" />
+                                        <span class="input-group-text">VNĐ</span>
+                                    </div>
+                                    <span asp-validation-for="DonGia" class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="TenLoai" class="form-label fw-semibold">
+                                        Danh mục <span class="text-danger">*</span>
+                                    </label>
+                                    <select asp-for="TenLoai" class="form-select">
+                                        <option value="">-- Chọn danh mục --</option>
+                                        @if (ViewBag.Categories != null)
+                                        {
+                                            @foreach (var cat in ViewBag.Categories)
+                                            {
+                                                <option value="@cat" selected="@(cat == Model.TenLoai)">@cat</option>
+                                            }
+                                        }
+                                    </select>
+                                    <span asp-validation-for="TenLoai" class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">
+                                        Hình ảnh hiện tại
+                                    </label>
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center p-3">
+                                            @if (!string.IsNullOrEmpty(Model.Hinh))
+                                            {
+                                                <img src="~/Hinh/HangHoa/@Model.Hinh" alt="@Model.TenHH" class="img-thumbnail" style="max-width: 200px;" />
+                                                <p class="text-muted small mt-2 mb-0">@Model.Hinh</p>
+                                            }
+                                            else
+                                            {
+                                                <p class="text-muted mb-0">
+                                                    <i class="bi bi-image fs-3 d-block mb-2"></i>
+                                                    Chưa có hình ảnh
+                                                </p>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">
+                                        Thay đổi hình ảnh
+                                    </label>
+                                    <input type="file" name="HinhFile" id="HinhFile" class="form-control" accept="image/*" />
+                                    <div class="form-text">
+                                        <i class="bi bi-info-circle me-1"></i>Để trống nếu không muốn thay đổi hình ảnh. Chấp nhận: JPG, PNG, GIF (Max 5MB)
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Cột phải -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="MoTaNgan" class="form-label fw-semibold">
+                                        Mô tả ngắn
+                                    </label>
+                                    <textarea asp-for="MoTaNgan" class="form-control" rows="4" placeholder="Nhập mô tả ngắn về sản phẩm"></textarea>
+                                    <span asp-validation-for="MoTaNgan" class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="MoTaChiTiet" class="form-label fw-semibold">
+                                        Mô tả chi tiết
+                                    </label>
+                                    <textarea asp-for="MoTaChiTiet" class="form-control" rows="12" placeholder="Nhập mô tả chi tiết về sản phẩm"></textarea>
+                                    <span asp-validation-for="MoTaChiTiet" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Preview hình ảnh mới -->
+                        <div class="row mb-4" id="previewSection" style="display: none;">
+                            <div class="col-12">
+                                <div class="card bg-light border-primary">
+                                    <div class="card-body text-center">
+                                        <p class="text-primary fw-semibold mb-2">
+                                            <i class="bi bi-eye me-1"></i>Xem trước hình ảnh mới
+                                        </p>
+                                        <img id="imagePreview" src="#" alt="Preview" class="img-thumbnail" style="max-width: 300px;" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-between pt-3 border-top">
+                            <a asp-action="Delete" asp-route-id="@Model.MaHH" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')">
+                                <i class="bi bi-trash me-1"></i>Xóa sản phẩm
+                            </a>
+                            <div class="d-flex gap-2">
+                                <a asp-action="Details" asp-route-id="@Model.MaHH" class="btn btn-info">
+                                    <i class="bi bi-eye me-1"></i>Xem chi tiết
+                                </a>
+                                <a asp-action="Index" class="btn btn-light">
+                                    <i class="bi bi-x-circle me-1"></i>Hủy
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-check-circle me-1"></i>Cập nhật sản phẩm
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Preview image khi chọn file mới
+        document.getElementById('HinhFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const preview = document.getElementById('imagePreview');
+            const previewSection = document.getElementById('previewSection');
+
+            if (file) {
+                // Kiểm tra loại file
+                if (!file.type.match('image.*')) {
+                    alert('Vui lòng chọn file hình ảnh!');
+                    this.value = '';
+                    previewSection.style.display = 'none';
+                    return;
+                }
+
+                // Kiểm tra kích thước file (5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('Kích thước file không được vượt quá 5MB!');
+                    this.value = '';
+                    previewSection.style.display = 'none';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    previewSection.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                previewSection.style.display = 'none';
+            }
+        });
+    </script>
+}
