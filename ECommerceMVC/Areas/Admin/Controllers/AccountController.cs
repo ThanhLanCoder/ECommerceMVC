@@ -1,6 +1,8 @@
 ﻿using ECommerceMVC.Areas.Admin.Models.ViewModels;
 using ECommerceMVC.Helper;
 using ECommerceMVC.Models.Entities;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -200,6 +202,18 @@ namespace ECommerceMVC.Areas.Admin.Controllers
         public IActionResult Delete(int id)
         {
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DangXuat()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return RedirectToAction(
+                actionName: "DangNhap",
+                controllerName: "KhachHang",
+                routeValues: new { area = "" }  
+            );
         }
     }
 }

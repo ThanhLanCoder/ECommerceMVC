@@ -40,6 +40,19 @@
                 <p><strong>Phương thức thanh toán:</strong> @(Model.CachThanhToan == "COD" ? "COD" : "Payment")</p>
             </div>
         </div>
+        <div class="card mb-4">
+            <div class="card-header">Mã QR đơn hàng</div>
+            <div class="card-body text-center">
+                <img src="@Url.Action("GenerateOrderQR", "Order", new { area = "Admin", id = Model.MaHd })"
+                     alt="QR Code"
+                     class="img-fluid"
+                     style="max-width: 220px;" />
+
+                <p class="mt-2 text-muted">
+                    Quét để xem chi tiết đơn hàng #@Model.MaHd
+                </p>
+            </div>
+        </div>
 
         <!-- Danh sách sản phẩm -->
         <div class="card mb-4">

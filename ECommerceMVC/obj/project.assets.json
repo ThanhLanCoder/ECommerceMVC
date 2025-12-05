@@ -2042,6 +2042,22 @@
           "lib/netstandard2.0/NuGet.Versioning.dll": {}
         }
       },
+      "QRCoder/1.7.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Drawing.Common": "6.0.0"
+        },
+        "compile": {
+          "lib/net6.0/QRCoder.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/QRCoder.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "System.CodeDom/5.0.0": {
         "type": "package",
         "compile": {
@@ -6284,6 +6300,33 @@
         "nuget.versioning.nuspec"
       ]
     },
+    "QRCoder/1.7.0": {
+      "sha512": "6R3hQkayihGIDjp3F1nLRDBWG+nqahGyOY2+fH4Rll16Vad67oaUUfHkOiMWKiJFnGh+PIGDfUos+0R9m54O1g==",
+      "type": "package",
+      "path": "qrcoder/1.7.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "lib/net35/QRCoder.dll",
+        "lib/net35/QRCoder.xml",
+        "lib/net40/QRCoder.dll",
+        "lib/net40/QRCoder.xml",
+        "lib/net5.0/QRCoder.dll",
+        "lib/net5.0/QRCoder.xml",
+        "lib/net6.0/QRCoder.dll",
+        "lib/net6.0/QRCoder.xml",
+        "lib/netstandard1.3/QRCoder.dll",
+        "lib/netstandard1.3/QRCoder.xml",
+        "lib/netstandard2.0/QRCoder.dll",
+        "lib/netstandard2.0/QRCoder.xml",
+        "lib/netstandard2.1/QRCoder.dll",
+        "lib/netstandard2.1/QRCoder.xml",
+        "nuget-icon.png",
+        "qrcoder.1.7.0.nupkg.sha512",
+        "qrcoder.nuspec"
+      ]
+    },
     "System.CodeDom/5.0.0": {
       "sha512": "JPJArwA1kdj8qDAkY2XGjSWoYnqiM7q/3yRNkt6n28Mnn95MuEGkZXUbPBf7qc3IjwrGY5ttQon7yqHZyQJmOQ==",
       "type": "package",
@@ -7580,7 +7623,8 @@
       "Microsoft.EntityFrameworkCore >= 8.0.0",
       "Microsoft.EntityFrameworkCore.SqlServer >= 8.0.0",
       "Microsoft.EntityFrameworkCore.Tools >= 8.0.0",
-      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 8.0.7"
+      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 8.0.7",
+      "QRCoder >= 1.7.0"
     ]
   },
   "packageFolders": {
@@ -7655,6 +7699,10 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
             "target": "Package",
             "version": "[8.0.7, )"
+          },
+          "QRCoder": {
+            "target": "Package",
+            "version": "[1.7.0, )"
           }
         },
         "imports": [

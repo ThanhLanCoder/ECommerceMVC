@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ETamdFoawn8=",
+  "dgSpecHash": "ukYzrMPsvYk=",
   "success": true,
   "projectFilePath": "D:\\ECommerceMVC\\ECommerceMVC\\ECommerceMVC.csproj",
   "expectedPackageFiles": [
@@ -125,6 +125,7 @@
     "C:\\Users\\TLT\\.nuget\\packages\\nuget.projectmodel\\6.11.0\\nuget.projectmodel.6.11.0.nupkg.sha512",
     "C:\\Users\\TLT\\.nuget\\packages\\nuget.protocol\\6.11.0\\nuget.protocol.6.11.0.nupkg.sha512",
     "C:\\Users\\TLT\\.nuget\\packages\\nuget.versioning\\6.11.0\\nuget.versioning.6.11.0.nupkg.sha512",
+    "C:\\Users\\TLT\\.nuget\\packages\\qrcoder\\1.7.0\\qrcoder.1.7.0.nupkg.sha512",
     "C:\\Users\\TLT\\.nuget\\packages\\system.codedom\\5.0.0\\system.codedom.5.0.0.nupkg.sha512",
     "C:\\Users\\TLT\\.nuget\\packages\\system.collections.immutable\\7.0.0\\system.collections.immutable.7.0.0.nupkg.sha512",
     "C:\\Users\\TLT\\.nuget\\packages\\system.composition\\7.0.0\\system.composition.7.0.0.nupkg.sha512",

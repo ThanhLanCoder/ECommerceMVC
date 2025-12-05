@@ -1,0 +1,69 @@
+﻿@model ECommerceMVC.Models.ViewModels.OrderDetailsVM
+
+@{
+    ViewData["Title"] = "Theo dõi đơn hàng";
+}
+
+<div class="container py-4">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">Theo Dõi Đơn Hàng</h2>
+        <p class="text-muted">Mã đơn hàng: <strong>#@Model.MaHd</strong></p>
+    </div>
+
+    <!-- Order Status -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="fw-bold mb-3">Trạng thái đơn hàng</h5>
+            <span class="badge bg-primary fs-6 px-3 py-2">
+                @Model.TenTrangThai
+            </span>
+        </div>
+    </div>
+
+    <!-- Customer Info -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="fw-bold mb-3">Thông tin người nhận</h5>
+            <p class="mb-1"><strong>Họ tên:</strong> @Model.HoTen</p>
+            <p class="mb-1"><strong>Điện thoại:</strong> @Model.DienThoai</p>
+            <p class="mb-1"><strong>Địa chỉ:</strong> @Model.DiaChi</p>
+            <p class="mb-1"><strong>Ngày đặt:</strong> @Model.NgayDat.ToString("dd/MM/yyyy HH:mm")</p>
+            <p><strong>Phương thức thanh toán:</strong> @Model.CachThanhToan</p>
+        </div>
+    </div>
+
+    <!-- Order Products -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="fw-bold mb-3">Sản phẩm</h5>
+
+            <table class="table table-bordered align-middle">
+                <thead>
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th class="text-center">Số lượng</th>
+                        <th class="text-end">Đơn giá</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Products)
+                    {
+                        <tr>
+                            <td>@item.TenHH</td>
+                            <td class="text-center">@item.SoLuong</td>
+                            <td class="text-end">@item.DonGia.ToString("N0") đ</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="text-end mt-3">
+                <h5 class="fw-bold">Phí vận chuyển: @Model.PhiVanChuyen.ToString("N0") đ</h5>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4 mb-5">
+        <a href="/" class="btn btn-secondary px-4">Về trang chủ</a>
+    </div>
+</div>

@@ -2,6 +2,7 @@
 using ECommerceMVC.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using QRCoder;
 
 namespace ECommerceMVC.Areas.Admin.Controllers
 {
@@ -20,7 +21,7 @@ namespace ECommerceMVC.Areas.Admin.Controllers
                 .Include(h => h.MaKhNavigation)
                 .Include(h => h.ChiTietHds)
                     .ThenInclude(ct => ct.MaHhNavigation)
-                .Include(h => h.MaTrangThaiNavigation) // Quan trọng: include để lấy tên trạng thái
+                .Include(h => h.MaTrangThaiNavigation) 
                 .AsQueryable();
 
             if (!string.IsNullOrEmpty(search))
@@ -87,13 +88,19 @@ namespace ECommerceMVC.Areas.Admin.Controllers
         {
             var order = db.HoaDons
                 .Include(h => h.MaKhNavigation)
-                .Include(h => h.ChiTietHds)
-                    .ThenInclude(ct => ct.MaHhNavigation)
+                .Include(h => h.ChiTietHds).ThenInclude(ct => ct.MaHhNavigation)
                 .Include(h => h.MaTrangThaiNavigation)
                 .FirstOrDefault(h => h.MaHd == id);
 
             if (order == null)
                 return NotFound();
+
+            // Generate QR
+            string secret = HttpContext.RequestServices.GetRequiredService<IConfiguration>()["OrderQrSecret"];
+            string key = OrderQrHelper.GenerateKey(order, secret);
+            string trackingUrl = OrderQrHelper.BuildTrackingUrl(Request, id, key);
+
+            ViewBag.TrackingUrl = trackingUrl;
 
             var vm = new OrderDetailsVM
             {
@@ -120,14 +127,18 @@ namespace ECommerceMVC.Areas.Admin.Controllers
         public IActionResult Print(int id)
         {
             var order = db.HoaDons
-                .Include(h => h.MaKhNavigation)
-                .Include(h => h.ChiTietHds)
-                    .ThenInclude(ct => ct.MaHhNavigation)
+                .Include(h => h.ChiTietHds).ThenInclude(ct => ct.MaHhNavigation)
                 .Include(h => h.MaTrangThaiNavigation)
                 .FirstOrDefault(h => h.MaHd == id);
 
             if (order == null)
                 return NotFound();
+
+            string secret = HttpContext.RequestServices.GetRequiredService<IConfiguration>()["OrderQrSecret"];
+            string key = OrderQrHelper.GenerateKey(order, secret);
+            string trackingUrl = OrderQrHelper.BuildTrackingUrl(Request, id, key);
+
+            ViewBag.TrackingUrl = trackingUrl;
 
             var vm = new OrderDetailsVM
             {
@@ -148,9 +159,9 @@ namespace ECommerceMVC.Areas.Admin.Controllers
                 }).ToList()
             };
 
-            // Dùng layout in gọn
-            return View(vm); // View Print.cshtml
+            return View(vm);
         }
+
 
         [HttpPost]
         public IActionResult UpdateStatus(int id, int status)
@@ -169,6 +180,50 @@ namespace ECommerceMVC.Areas.Admin.Controllers
                 .FirstOrDefault(t => t.MaTrangThai == status)?.TenTrangThai ?? "";
 
             return Json(new { success = true, name = tenTrangThai });
+        }
+
+
+        public IActionResult GenerateOrderQR(int id)
+        {
+            var order = db.HoaDons.FirstOrDefault(h => h.MaHd == id);
+            if (order == null)
+                return NotFound();
+
+            // Lấy secret từ appsettings
+            string secret = HttpContext.RequestServices.GetRequiredService<IConfiguration>()["OrderQrSecret"];
+
+            // Tạo mã key bảo mật
+            string key = OrderQrHelper.GenerateKey(order, secret);
+
+            // Tạo URL tracking
+            string trackingUrl = OrderQrHelper.BuildTrackingUrl(Request, id, key);
+
+            // Generate QR
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(trackingUrl, QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+
+            using (var bitmap = qrCode.GetGraphic(20))
+            using (var stream = new MemoryStream())
+            {
+                bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                return File(stream.ToArray(), "image/png");
+            }
+        }
+
+        public IActionResult ScanRedirect(int id, string key)
+        {
+            var order = db.HoaDons.FirstOrDefault(h => h.MaHd == id);
+            if (order == null)
+                return BadRequest("Invalid Order");
+
+            string secret = HttpContext.RequestServices.GetRequiredService<IConfiguration>()["OrderQrSecret"];
+            string validKey = OrderQrHelper.GenerateKey(order, secret);
+
+            if (key != validKey)
+                return Unauthorized("Invalid QR Code");
+
+           return RedirectToAction("ViewOrder", "OrderTracking", new { id });
         }
 
     }

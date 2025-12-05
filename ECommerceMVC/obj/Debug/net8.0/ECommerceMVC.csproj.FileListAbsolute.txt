@@ -255,3 +255,4 @@ D:\ECommerceMVC\ECommerceMVC\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Win
 D:\ECommerceMVC\ECommerceMVC\obj\Debug\net8.0\ECommerceMVC.sourcelink.json
 D:\ECommerceMVC\ECommerceMVC\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\ECommerceMVC\ECommerceMVC\bin\Debug\net8.0\AutoMapper.dll
+D:\ECommerceMVC\ECommerceMVC\bin\Debug\net8.0\QRCoder.dll
