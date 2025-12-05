@@ -19,31 +19,31 @@
 ## Một số giao diện
 #### (Do mình custom lại template nên 1 số chỗ chưa kịp sửa, mong mng thông cảm :) )
 ##### Đăng Nhập
-![example](DangNhap.png)
+![example](images/DangNhap.png)
 
 ##### Home
-![example](Home.png)
+![example](images/Home.png)
 
 ##### Giỏ Hàng
-![example](GioHang.png)
+![example](images/GioHang.png)
 
 ##### Thanh Toán: nếu bạn chọn thanh toán bằng VnPay thì bạn có thể sử dụng 1 số trường hợp test ở link <https://sandbox.vnpayment.vn/apis/vnpay-demo/>
-![example](ThanhToan.png)
+![example](images/ThanhToan.png)
 
 ##### Lịch Sử Đơn Hàng
-![example](LichSu.png)
+![example](images/LichSu.png)
 
 ##### Dashboard
-![example](Admin.png)
+![example](images/Admin.png)
 
 ##### Quản Lý Đơn Hàng
-![example](QLDH.png)
+![example](images/QLDH.png)
 
 ##### Quản Lý Sản Phẩm
-![example](QLSP.png)
+![example](images/QLSP.png)
 
 ##### Quản Lý Khách Hàng
-![example](QLKH.png)
+![example](images/QLKH.png)
 
 
 
